@@ -1,0 +1,62 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+    "manifest_version": 2,
+    "name": "GramBot: Bot for Instagram",
+    "short_name": "GramBot",
+    "description": "Post comments automatically on Instagram",
+    "version": "1.0.1",
+    "icons": {
+        "16": "icons/fb_message_cleaner16.png",
+        "48": "icons/fb_message_cleaner48.png",
+        "128": "icons/fb_message_cleaner128.png"
+    },
+    "browser_action": {
+        "default_icon": "icons/fb_message_cleaner16.png",
+        "default_title": "GramBot",
+        "default_popup": "screens/popup.html"
+    },
+    "background": {
+        "scripts": [
+            "js/constants.min.js",
+            "js/background.js",
+            "js/utils.min.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+        "https://www.instagram.com/*",
+        "https://instagram.com/*",
+        "http://www.instagram.com/*",
+        "http://m.instagram.com/*"
+            ],
+            "js": [
+                "js/constants.min.js",
+                "js/utils.min.js",
+                "js/userinfo.min.js",
+                "js/content.min.js",
+                "js/analytics.min.js"
+            ]
+        }
+    ],
+    "permissions": [
+        "tabs",
+	"storage",
+ 	"webRequest","webRequestBlocking", 
+        "https://www.instagram.com/*",
+        "https://instagram.com/*",
+        "http://www.instagram.com/*",
+        "http://m.instagram.com/*",
+	"https://i.instagram.com/*",
+        "http://www.fbmessagecleaner.com/*",
+        "https://www.fbmessagecleaner.com/*"
+    ],
+    "web_accessible_resources": [
+        "screens/fb_cleaner.html",
+        "screens/index.html",
+        "img/analyze.png",
+        "img/brush.png"
+    ],
+"content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'"
+}
