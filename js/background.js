@@ -19,11 +19,11 @@ chrome.runtime.setUninstallURL("https://www.fbmessagecleaner.com/GramBot/uninsta
 chrome.runtime.onMessage.addListener(function (a, b, c) {
     switch (a.req) {
         case ACTION_OWNER_ID: return console.log("start queryOwnerId"), b = "https://i.instagram.com/api/v1/users/" + encodeURIComponent(a.owner) + "/info/", fetch(b).then(function (a) { return a.json() }).then(function (a) { c(a) }), !0;
-        case ACTION_SEND_MESSAGE: chrome.storage.local.set({ categories: a.cat }, function () { }),
+        case ACTION_SEND_MESSAGE:
+            chrome.storage.local.set({ categories: a.cat }, function () { }),
             chrome.storage.local.set({ tempsattente: a.tempsattente }, function () { }),
             chrome.tabs.getSelected(null, function (b) {
-                chrome.tabs.sendRequest(b.id,
-                    { type: "CheckLicence", req: a })
+                chrome.tabs.sendRequest(b.id, { type: "CheckLicence", req: a })
             })
     }
 });

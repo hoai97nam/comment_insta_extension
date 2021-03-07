@@ -1,236 +1,254 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="fbMessageCleanerApp" ng-controller="fbMessageCleanerCtrl" ng-csp>
-   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-      <title>Wannonce ToolKit</title>
-      <link href="../css/style.min.css" rel="stylesheet">
-      <link href="../css/libs/angular-csp.min.css" rel="stylesheet">
-   </head>
-   <body id="fbMessageCleanerId">
-      <nav class="toolbar">
-         <span>InstaBot</span>
-      </nav>
-      <div class="master-container" ng-hide="contentViewScreen == '0'">
-         <!----------------------------------------------------- Alert ---------------------------------------------->
 
-         <div id=myalert class="alert-msg" ng-show="fbCleanerReport != null && fbCleanerReport.msg != null && fbCleanerReport.msg != ''">
-            <p ng-class="{'alert' : fbCleanerReport.type == 'alert', 'error' : fbCleanerReport.type == 'error', 'warrning' : fbCleanerReport.type == 'warrning'}">{{fbCleanerReport.msg}}</p>
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+   <title>Wannonce ToolKit</title>
+   <link href="../css/style.min.css" rel="stylesheet">
+   <link href="../css/libs/angular-csp.min.css" rel="stylesheet">
+</head>
+
+<body id="fbMessageCleanerId">
+   <nav class="toolbar">
+      <span>InstaBot</span>
+   </nav>
+   <div class="master-container" ng-hide="contentViewScreen == '0'">
+      <!----------------------------------------------------- Alert ---------------------------------------------->
+
+      <div id=myalert class="alert-msg"
+         ng-show="fbCleanerReport != null && fbCleanerReport.msg != null && fbCleanerReport.msg != ''">
+         <p
+            ng-class="{'alert' : fbCleanerReport.type == 'alert', 'error' : fbCleanerReport.type == 'error', 'warrning' : fbCleanerReport.type == 'warrning'}">
+            {{fbCleanerReport.msg}}</p>
 
 
-         </div>
-         <!----------------------------------------------------- /Alert ---------------------------------------------->
-         <!----------------------------------------------------- Core functionality UI ---------------------------------------------->
-         <p class="note" style="color: #a70f0f" ng-hide="fbCleanerReport && fbCleanerReport.msg != null && fbCleanerReport.msg != ''">
-            !!This tool is unofficial. Do not abuse. Use it at your own risk.!!<br>
-         </p>
+      </div>
+      <!----------------------------------------------------- /Alert ---------------------------------------------->
+      <!----------------------------------------------------- Core functionality UI ---------------------------------------------->
+      <p class="note" style="color: #a70f0f"
+         ng-hide="fbCleanerReport && fbCleanerReport.msg != null && fbCleanerReport.msg != ''">
+         !!This tool is unofficial. Do not abuse. Use it at your own risk.!!<br>
+      </p>
 
-<div id=nomessage style="display: none">
+      <div id=nomessage style="display: none">
          <p class="note" style="color: #a70f0f">
             <br><a href='https://www.instagram.com/' target='_blank'>Please log in Instagram first.</a><br>
          </p>
-</div>
+      </div>
 
 
-         <div class="big-btn-holder" style="display:none">
-            <div class="big-rounded-btn" ng-class="{'analyze':(contentViewScreen == '1' || contentViewScreen == '5'), 'clean':contentViewScreen == '3'}">
-               <!-- 'analyze' class for analyzing. 'clean' class for clean button -->
-               <!-- click to Analyze -->
-               <div id="fbMsgCleanerAnalyze" ng-click="startAnalyze()" ng-show="contentViewScreen == '1'">
-                  <div class="btn-icon">
-                     <img ng-src="{{analyzeImage}}" id="fbMsgCleanerAnalyzeIcon">
-                  </div>
-                  <p class="btn-label">Analyze(DeleteAll)</p>
+      <div class="big-btn-holder" style="display:none">
+         <div class="big-rounded-btn"
+            ng-class="{'analyze':(contentViewScreen == '1' || contentViewScreen == '5'), 'clean':contentViewScreen == '3'}">
+            <!-- 'analyze' class for analyzing. 'clean' class for clean button -->
+            <!-- click to Analyze -->
+            <div id="fbMsgCleanerAnalyze" ng-click="startAnalyze()" ng-show="contentViewScreen == '1'">
+               <div class="btn-icon">
+                  <img ng-src="{{analyzeImage}}" id="fbMsgCleanerAnalyzeIcon">
                </div>
-               <!-- /click to Analyze -->
-               <!-- Analyzing -->
-               <div ng-hide="contentViewScreen != '2'">
-                  <div class="percent">{{progressStatus}}%</div>
-                  <p class="btn-label">Analyzing...</p>
+               <p class="btn-label">Analyze(DeleteAll)</p>
+            </div>
+            <!-- /click to Analyze -->
+            <!-- Analyzing -->
+            <div ng-hide="contentViewScreen != '2'">
+               <div class="percent">{{progressStatus}}%</div>
+               <p class="btn-label">Analyzing...</p>
+            </div>
+            <!-- /Analyzing -->
+            <!-- click to clean -->
+            <div id="fbMsgCleanerDelete" ng-hide="contentViewScreen != '3'" ng-click="startDeletion()">
+               <div class="btn-icon">
+                  <img ng-src="{{brushImage}}" id="fbMsgCleanerDeleteIcon" />
                </div>
-               <!-- /Analyzing -->
-               <!-- click to clean -->
-               <div id="fbMsgCleanerDelete" ng-hide="contentViewScreen != '3'" ng-click="startDeletion()">
-                  <div class="btn-icon">
-                     <img ng-src="{{brushImage}}" id="fbMsgCleanerDeleteIcon"/>
-                  </div>
-                  <p class="btn-label">Archive All Messages</p>
+               <p class="btn-label">Archive All Messages</p>
+            </div>
+            <!-- /click to clean -->
+            <!-- Deleting messages -->
+            <div ng-hide="contentViewScreen != '4'">
+               <div class="btn-icon">
+                  <img ng-src="{{brushImage}}">
                </div>
-               <!-- /click to clean -->
-               <!-- Deleting messages -->
-               <div ng-hide="contentViewScreen != '4'">
-                  <div class="btn-icon">
-                     <img ng-src="{{brushImage}}">
-                  </div>
-                  <p class="btn-label">Archiving ...</p>
-               </div>
-               <!-- /Deleting messages -->
-               <!-- Share n FB -->
-               <div id="fbMsgCleanerSuccess" ng-hide="contentViewScreen != '5'">
-                  <!--<div style="margin-top: 41px !important;" id="fb_iframe">
+               <p class="btn-label">Archiving ...</p>
+            </div>
+            <!-- /Deleting messages -->
+            <!-- Share n FB -->
+            <div id="fbMsgCleanerSuccess" ng-hide="contentViewScreen != '5'">
+               <!--<div style="margin-top: 41px !important;" id="fb_iframe">
                      FB iframe will be inserted(programatically)
                   </div>-->
-				  <div class="btn-icon">
-                     <img ng-src="{{brushImage}}">
-                  </div>
-				  <p class="btn-label">Please share & leave your comments</p>
+               <div class="btn-icon">
+                  <img ng-src="{{brushImage}}">
                </div>
-               <!-- /Share n FB -->
+               <p class="btn-label">Please share & leave your comments</p>
             </div>
+            <!-- /Share n FB -->
+         </div>
+      </div>
+
+
+      <!--<p style="text-align: center;font-weight: bold;color: #e4685d;">OR</p> -->
+      <center>
+
+
+
+         <p id="Explication" style="display: block">
+            Your message will be made of 5 parts of text.<br>
+            Each part of text will have 5 alternatives.<br>
+            Objective is to have (5⁵=3125) different messages to avoid to be detected as spam.<br>
+            Also note you can use %username%, %full_name% and %firstname% as variable to respectively use in comment the
+            username of people beeing commented (eg: Hello @%username% ! ), his full name or only his firstname. (see
+            examples below)
+            <br><br>
+            <font color=red>Free Trial to comment on 10 posts automatically, then you <a
+                  href='https://www.fbmessagecleaner.com/GramBot/api/paypal.php' target='_blank'>can buy cheap monthly
+                  access here!</a></font>
+            <br>
+            <a href='https://t.me/myglobalsupport' target='_blank'>You can contact us here for live support.</a>
+         </p>
+
+
+
+
+
+         <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+
+         <h2>Step 1: Buid your comments</h2>
+         <table border=1>
+
+            <th>
+            <td><b>Option 1</b></td>
+            <td><b>Option 2</b></td>
+            <td><b>Option 3</b></td>
+            <td><b>Option 4</b></td>
+            <td><b>Option 5</b></td>
+            </th>
+
+            <tr>
+               <td><b>Part 1</b></td>
+               <td><input type=text id=1_1 placeholder="Hello"></td>
+               <td><input type=text id=1_2 placeholder="Hi @%username%!"></td>
+               <td><input type=text id=1_3 placeholder="Great photo %full_name%."></td>
+               <td><input type=text id=1_4 placeholder="Great pic %firstname%"></td>
+               <td><input type=text id=1_5 placeholder="Great view."></td>
+            </tr>
+
+            <tr>
+               <td><b>Part 2</b></td>
+               <td><input type=text id=2_1 placeholder="This shooting is great."></td>
+               <td><input type=text id=2_2 placeholder="That photo is wonderful."></td>
+               <td><input type=text id=2_3 placeholder="what a view!"></td>
+               <td><input type=text id=2_4 placeholder="perfect!"></td>
+               <td><input type=text id=2_5 placeholder="Congratulation!"></td>
+            </tr>
+
+            <tr>
+               <td><b>Part 3</b></td>
+               <td><input type=text id=3_1 placeholder="Please contact us"></td>
+               <td><input type=text id=3_2 placeholder="Reach us!"></td>
+               <td><input type=text id=3_3 placeholder="Send us a DM!"></td>
+               <td><input type=text id=3_4 placeholder="Write us"></td>
+               <td><input type=text id=3_5 placeholder="write us"></td>
+            </tr>
+
+            <tr>
+               <td><b>Part 4</b></td>
+               <td><input type=text id=4_1 placeholder="we wish to work with you!"></td>
+               <td><input type=text id=4_2 placeholder="we have a job for you!"></td>
+               <td><input type=text id=4_3 placeholder="come to us!"></td>
+               <td><input type=text id=4_4 placeholder="come to us"></td>
+               <td><input type=text id=4_5 placeholder="Have a look to our portfolio."></td>
+            </tr>
+
+            <tr>
+               <td><b>Part 5</b></td>
+               <td><input type=text id=5_1 placeholder="Thank you!"></td>
+               <td><input type=text id=5_2 placeholder="REgards"></td>
+               <td><input type=text id=5_3 placeholder="Thanks!"></td>
+               <td><input type=text id=5_4 placeholder="Thks!"></td>
+               <td><input type=text id=5_5 placeholder="Cheers"></td>
+            </tr>
+
+         </table>
+
+         <p>
+            <input type="button" id="Save" value="Save & continue" class="selectAndDelete"
+               ng-click="SaveInDatabase()"><br>
+         </p>
+
+         <p id="HelpMsg" style="display: none">Example of comment posted (Go to next step if OK)
+         </p>
+         <b>
+            <div id=msgexample></div>
+         </b>
+
+         <p>
+         <div id="HelpCat" style="display: none">
+            <h2>Step 2: Define hashtags & delay</h2>
+            <li>Provide 1 or more hashtags to find posts/people
+               <br>
+               <table>
+                  <tr>
+
+                     <td>
+                        <input type=text id="SelectCategory" size="40" style="display: block"
+                           placeholder="#photo #bird #travels">
+                     </td>
+
+                     <td>
+                        <select id="TempsAttente" style="display: block">
+                           <option value="30000" selected>30 seconds between 2 messages</option>
+                           <option value="60000">1 minute between 2 messages</option>
+                           <option value="300000">5 minutes between 2 messages</option>
+                           <option value="900000">15 minutes between 2 messages</option>
+                           <option value="1800000">30 minutes between 2 messages</option>
+                           <option value="3600000">1 hour between 2 messages</option>
+                        </select>
+                     </td>
+
+                  </tr>
+               </table>
+
+               </p>
+
+
+
+
+               <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+
+               <input type="button" id="EnvoiMessage" class="selectAndDelete" value="Start Bot now!"
+                  ng-click="ActionSendMessage()">
+
+               <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+               <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+               <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+
+               <input type="button" id="Reinit" value="click here to clean all history" ng-click="ReinitDatabase()"
+                  style="display: block">
+
+               <p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
+
+
          </div>
 
-	 
-	<!--<p style="text-align: center;font-weight: bold;color: #e4685d;">OR</p> -->
-  <center>
-  
- 
-	
-	<p id="Explication" style="display: block">
-	Your message will be made of 5 parts of text.<br>
-        Each part of text will have 5 alternatives.<br>
-	Objective is to have (5⁵=3125) different messages to avoid to be detected as spam.<br>
-	Also note you can use %username%, %full_name% and %firstname% as variable to respectively use in comment the username of people beeing commented (eg: Hello @%username% ! ), his full name or only his firstname. (see examples below)
-<br><br>
-<font color=red>Free Trial to comment on 10 posts automatically, then you <a href='https://www.fbmessagecleaner.com/GramBot/api/paypal.php' target='_blank'>can buy cheap monthly access here!</a></font>
-<br>
-<a href='https://t.me/myglobalsupport' target='_blank'>You can contact us here for live support.</a>
-	</p>
+      </center>
 
 
-
-	
-
-<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-
-<h2>Step 1: Buid your comments</h2>
-<table border=1>
-
-<th>
-<td><b>Option 1</b></td>
-<td><b>Option 2</b></td>
-<td><b>Option 3</b></td>
-<td><b>Option 4</b></td>
-<td><b>Option 5</b></td>
-</th>
-
-<tr>
-<td><b>Part 1</b></td>
-<td><input type=text id=1_1 placeholder="Hello"></td>
-<td><input type=text id=1_2 placeholder="Hi @%username%!"></td>
-<td><input type=text id=1_3 placeholder="Great photo %full_name%."></td>
-<td><input type=text id=1_4 placeholder="Great pic %firstname%"></td>
-<td><input type=text id=1_5 placeholder="Great view."></td>
-</tr>
-
-<tr>
-<td><b>Part 2</b></td>
-<td><input type=text id=2_1 placeholder="This shooting is great."></td>
-<td><input type=text id=2_2 placeholder="That photo is wonderful."></td>
-<td><input type=text id=2_3 placeholder="what a view!"></td>
-<td><input type=text id=2_4 placeholder="perfect!"></td>
-<td><input type=text id=2_5 placeholder="Congratulation!"></td>
-</tr>
-
-<tr>
-<td><b>Part 3</b></td>
-<td><input type=text id=3_1 placeholder="Please contact us"></td>
-<td><input type=text id=3_2 placeholder="Reach us!"></td>
-<td><input type=text id=3_3 placeholder="Send us a DM!"></td>
-<td><input type=text id=3_4 placeholder="Write us"></td>
-<td><input type=text id=3_5 placeholder="write us"></td>
-</tr>
-
-<tr>
-<td><b>Part 4</b></td>
-<td><input type=text id=4_1 placeholder="we wish to work with you!"></td>
-<td><input type=text id=4_2 placeholder="we have a job for you!"></td>
-<td><input type=text id=4_3 placeholder="come to us!"></td>
-<td><input type=text id=4_4 placeholder="come to us"></td>
-<td><input type=text id=4_5 placeholder="Have a look to our portfolio."></td>
-</tr>
-
-<tr>
-<td><b>Part 5</b></td>
-<td><input type=text id=5_1 placeholder="Thank you!"></td>
-<td><input type=text id=5_2 placeholder="REgards"></td>
-<td><input type=text id=5_3 placeholder="Thanks!"></td>
-<td><input type=text id=5_4 placeholder="Thks!"></td>
-<td><input type=text id=5_5 placeholder="Cheers"></td>
-</tr>
-
-</table>
-
-<p>
-<input type="button" id="Save" value="Save & continue" class="selectAndDelete" ng-click="SaveInDatabase()"><br>
-</p>
-
-<p id="HelpMsg" style="display: none">Example of comment posted (Go to next step if OK)
-</p>
-<b><div id=msgexample></div></b>
-
-<p>
-<div id="HelpCat" style="display: none">
-<h2>Step 2: Define hashtags & delay</h2>
-<li>Provide 1 or more hashtags to find posts/people
-<br>
-<table>
-<tr>
-
-<td>
-<input type=text id="SelectCategory" size="40"  style="display: block" placeholder="#photo #bird #travels">
-</td>
-
-<td>
-<select id="TempsAttente" style="display: block">
-<option value="30000" selected>30 seconds between 2 messages</option>
-<option value="60000">1 minute between 2 messages</option>
-<option value="300000">5 minutes between 2 messages</option>
-<option value="900000">15 minutes between 2 messages</option>
-<option value="1800000">30 minutes between 2 messages</option>
-<option value="3600000">1 hour between 2 messages</option>
-</select>
-</td>
-
-</tr>
-</table>
-
-</p>
-
-
-
-
-<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-
-<input type="button" id="EnvoiMessage" class="selectAndDelete" value="Start Bot now!" ng-click="ActionSendMessage()">
-
-<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-
-<input type="button" id="Reinit" value="click here to clean all history" ng-click="ReinitDatabase()" style="display: block">
-	
-	<p style="text-align: center;font-weight: bold;color: #e4685d;"></p>
-
-
-</div>
-	
- </center>
-
-
-         <footer>
-            <span>InstaBot &copy; 2019</span>
-         </footer>
-         <!----------------------------------------------------- /Footer ---------------------------------------------->
-      </div>
-      <!----------------------------------------------------- Footer ---------------------------------------------->
       <footer>
          <span>InstaBot &copy; 2019</span>
       </footer>
       <!----------------------------------------------------- /Footer ---------------------------------------------->
-      <script type="text/javascript" src="../js/libs/angular.min.js"></script>
-      <script type="text/javascript" src="../js/constants.min.js"></script>
-      <script type="text/javascript" src="../js/app.min.js"></script>
-   </body>
+   </div>
+   <!----------------------------------------------------- Footer ---------------------------------------------->
+   <footer>
+      <span>InstaBot &copy; 2019</span>
+   </footer>
+   <!----------------------------------------------------- /Footer ---------------------------------------------->
+   <script type="text/javascript" src="../js/libs/angular.min.js"></script>
+   <script type="text/javascript" src="../js/constants.min.js"></script>
+   <script type="text/javascript" src="../js/app.min.js"></script>
+</body>
+
 </html>
